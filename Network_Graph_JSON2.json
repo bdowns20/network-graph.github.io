@@ -1,0 +1,186 @@
+{
+    "nodes": [
+        {
+            "id": "GIDE",
+            "label": "GIDE",
+            "Description": "The CDAO in partnership with the Joint Chief of Staff launched GIDE (Global Information Dominance Experiment). Designed to leverage advances in software integration to: Improve global threat awareness and enable faster decisions in crisis and conflict, Provide proactive joint force deterrence and denial options, Provide commanders and warfighters with the information required to achieve kill chain advantage, expediate global, common access, data integration across combatant commands and with our allies and partners. {Source: CDAO brief on JWICS}"
+        },
+        {
+            "id": "CDS",
+            "label": "CDS",
+            "Description": "Capability Development Summit (CDS) is focused on closing immediate gaps in the EUCOM AOR with near term focused actions. \n<most items are classified. Need to add details on highside.>\n<Reference CDS SharePoint on JWICS. Refer to CDS Strategy>"
+        },
+        {
+            "id": "EMTEC",
+            "label": "EMTEC",
+            "Description": "Is this related to this contract? - MF \nhttps://www.usaspending.gov/award/CONT_AWD_F615_9700_W91QUZ06D0007_9700 "
+        },
+        {
+            "id": "JTI",
+            "label": "JTI",
+            "Description": "Not Available"
+        },
+        {
+            "id": "Longbow",
+            "label": "Longbow",
+            "Description": "CJADC2 Data Integration layer"
+        },
+        {
+            "id": "BE",
+            "label": "BE",
+            "Description": "Funding stream for Europe AOR"
+        },
+        {
+            "id": "CMM",
+            "label": "CMM",
+            "Description": "Not Available"
+        },
+        {
+            "id": "CIP Modernization Initiative",
+            "label": "CIP Modernization Initiative",
+            "Description": "The CMI is a DoD and IC implementation of deliberate and emergent strategies focused on providing SOTA solutions to close capability gaps in common intelligence picture and intelligence fusion and data management necessary to support it. Heavy push to FADE products."
+        },
+        {
+            "id": "JEMSO",
+            "label": "JEMSO",
+            "Description": "Joint Electromagnetic Spectrum Operations (JEMSO) \nJEMSO Doctrine Document: \" JEMSO actions to exploit, attack, protect, and manage the EMOE rely on personnel and systems from electromagnetic warfare (EW), electro-magnetic spectrum (EMS) management, intelligence, space, and cyberspace mission areas. Instead of these mission areas being planned and executed in a minimally coordinated and stove piped fashion. "
+        },
+        {
+            "id": "CDAO",
+            "label": "CDAO",
+            "Description": "The Chief Data and Artificial Intelligence Office (CDAO) was created up in the DOD in February 2022 by combining the offices of the Joint Artificial Intelligence Center (JAIC), Defense Digital Services (DDS), the Chief Data Officer, and the enterprise platform Advana (Advanced Analytics) into one organization. The CDAO is foundational organization for data, analytic, and AI-enabled capabilities to be developed and fielded at scale."
+        },
+        {
+            "id": "JADC2",
+            "label": "JADC2",
+            "Description": "Joint All Domain Command and Control (JADC2) is the Joint Force Commander\u2019s ability to Command and Control (C2) across warfighting domains with Allies and Partners.  JADC2 relies on linking the correct data to all warfighters for the best decisions and outcomes. JADC2 is neither a product nor program of record, but rather a true all-domain construct and modernization framework for command and control of the Joint Force, Allies, and Partners. Its implementation involves equipping JFCs/Joint Force with integrated and synchronized all domain capabilities. It also involves a strategy of\u00a0 increasing interoperability and decision speed across the spectrum of conflict to include conventional and nuclear operations. "
+        },
+        {
+            "id": "TFC 2.0 / CAADI",
+            "label": "TFC 2.0 / CAADI",
+            "Description": "Highside"
+        },
+        {
+            "id": "AUSTERE",
+            "label": "AUSTERE",
+            "Description": "Not Available"
+        }
+    ],
+    "edges": [
+        {
+            "source": "GIDE",
+            "target": "MAVEN Smart System",
+            "type": "Dependency"
+        },
+        {
+            "source": "GIDE",
+            "target": "JADC2",
+            "type": "Dependency"
+        },
+        {
+            "source": "GIDE",
+            "target": "Longbow",
+            "type": "Dependency"
+        },
+        {
+            "source": "GIDE",
+            "target": "CDAO",
+            "type": "Dependency"
+        },
+        {
+            "source": "GIDE",
+            "target": "CDAO",
+            "type": "Stakeholder"
+        },
+        {
+            "source": "GIDE",
+            "target": "Advana",
+            "type": "Stakeholder"
+        },
+        {
+            "source": "GIDE",
+            "target": "MSS",
+            "type": "Stakeholder"
+        },
+        {
+            "source": "GIDE",
+            "target": "NGA",
+            "type": "Stakeholder"
+        },
+        {
+            "source": "GIDE",
+            "target": "CCMDs",
+            "type": "Stakeholder"
+        },
+        {
+            "source": "GIDE",
+            "target": "Joint Staff",
+            "type": "Ownership"
+        },
+        {
+            "source": "CIP Modernization Initiative",
+            "target": "JADC2",
+            "type": "Dependency"
+        },
+        {
+            "source": "CIP Modernization Initiative",
+            "target": "OUSDI",
+            "type": "Ownership"
+        },
+        {
+            "source": "CIP Modernization Initiative",
+            "target": "ODNI",
+            "type": "Ownership"
+        },
+        {
+            "source": "CIP Modernization Initiative",
+            "target": "JSJ2",
+            "type": "Ownership"
+        },
+        {
+            "source": "JEMSO",
+            "target": "JADC2",
+            "type": "Dependency"
+        },
+        {
+            "source": "JEMSO",
+            "target": "GIDE",
+            "type": "Dependency"
+        },
+        {
+            "source": "JEMSO",
+            "target": "CCMDs",
+            "type": "Stakeholder"
+        },
+        {
+            "source": "CDAO",
+            "target": "OSD",
+            "type": "Ownership"
+        },
+        {
+            "source": "JADC2",
+            "target": "JADC2",
+            "type": "Dependency"
+        },
+        {
+            "source": "JADC2",
+            "target": "CDAO",
+            "type": "Stakeholder"
+        },
+        {
+            "source": "JADC2",
+            "target": "CCMDs",
+            "type": "Stakeholder"
+        },
+        {
+            "source": "JADC2",
+            "target": "OSD CDAO",
+            "type": "Ownership"
+        },
+        {
+            "source": "JADC2",
+            "target": "Joint Staff",
+            "type": "Ownership"
+        }
+    ]
+}

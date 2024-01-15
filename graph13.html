@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>USEUCOM Initiatives Network Graph</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/vis-network/styles/vis-network.min.css"/>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #pageTitle {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+        #mynetwork {
+            width: 100%;
+            height: 80vh;
+            border: 1px solid lightgray;
+        }
+        #controls {
+            padding: 10px;
+            text-align: center;
+        }
+        #zoomControls button {
+            margin-right: 5px;
+        }
+        #details, #search {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-top: 1px solid #ddd;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="pageTitle">USEUCOM Initiatives Network Graph</div>
+
+<div id="controls">
+    <div id="zoomControls">
+        <button id="zoomIn">Zoom In</button>
+        <button id="zoomOut">Zoom Out</button>
+        <button id="resetZoom">Reset Zoom</button>
+    </div>
+    <input type="text" id="searchBox" placeholder="Enter a node label to search">
+    <button id="searchBtn">Search</button>
+    <button id="exportBtn">Export as Image</button>
+    <button id="exportCsvBtn">Export as CSV</button>
+    <button id="helpBtn">Help</button>
+</div>
+
+<div id="mynetwork"></div>
+<div id="details">Click on a node to see its details.</div>
+
+<!-- The Help Modal -->
+<div id="helpModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Help and User Guide</h2>
+        <p>This application serves as a first step to capture EUCOM Command Priorities based on many facets. This will help the Command understand overlaps, barriers, and mutually exclusive efforts. The network graph is interactive and dynamic allowing users to select features and visualize inter-connective nodes based off {Stakeholders, Tools, People, Budgeting, etc.}.</p>
+        <!-- Add more content as needed -->
+    </div>
+</div>
+
+<script type="text/javascript">
+    fetch('Network_Graph_JSON2.json').then(response => response.json()).then(data => {
+        var nodes = new vis.DataSet(data.nodes.map(node => ({
+            id: node.id,
+            label: node.label,
+            description: node.Description
+        })));
+
+        var edges = new vis.DataSet(data.edges.map(edge => ({
+            from: edge.source,
+            to: edge.target
+        })));
+
+        var container = document.getElementById('mynetwork');
+        var visData = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            nodes: {
+                borderWidth: 2,
+                size: 30,
+                color: {
+                    border: '#406897',
+                    background: '#6AAFFF'
+                },
+                font: {
+                    color: '#eeeeee'
+                }
+            }
+        };
+        var network = new vis.Network(container, visData, options);
+
+        function showNodeDetails(nodeId) {
+            var nodeData = nodes.get(nodeId);
+            document.getElementById('details').innerHTML = '<strong>' + nodeData.label + ':</strong> ' + nodeData.description;
+        }
+
+        function resetAllNodes() {
+            nodes.forEach(function (node) {
+                nodes.update({id: node.id, color: {border: '#406897', background: '#6AAFFF'}});
+            });
+        }
+
+        network.on("click", function (params) {
+        if (params.nodes.length > 0) {
+            var nodeId = params.nodes[0];
+            showNodeDetails(nodeId);
+            resetAllNodes();
+            var connectedNodes = network.getConnectedNodes(nodeId);
+            nodes.update({id: nodeId, color: {border: '#FFA500', background: '#FFD700'}});
+            connectedNodes.forEach(function (id) {
+                nodes.update({id: id, color: {border: '#FFA500', background: '#FFFF00'}});
+            });
+        } else {
+            resetAllNodes();
+        }
+    });
+
+            document.getElementById('searchBtn').addEventListener('click', function() {
+        var searchTerm = document.getElementById('searchBox').value;
+        var foundNode = nodes.get({
+            filter: function (node) {
+                return node.label.toLowerCase() === searchTerm.toLowerCase();
+            }
+        });
+
+        if (foundNode.length > 0) {
+            network.focus(foundNode[0].id, {scale: 1.5});
+            network.selectNodes([foundNode[0].id]);
+            showNodeDetails(foundNode[0].id);
+        } else {
+            alert("Node not found.");
+        }
+    });
+
+    // Export as Image
+    document.getElementById('exportBtn').addEventListener('click', function() {
+        var dataURL = network.canvas.toDataURL();
+        var link = document.createElement('a');
+        link.download = 'network-graph.png';
+        link.href = dataURL;
+        link.click();
+    });
+
+    // Export as CSV
+    document.getElementById('exportCsvBtn').addEventListener('click', function() {
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Node ID,Label\n"; // Headers for nodes
+
+        // Add node data
+        nodes.forEach(function(node) {
+            csvContent += node.id + "," + node.label + "\n";
+        });
+
+        // Add edge data
+        csvContent += "\nEdge Source,Edge Target\n"; // Headers for edges
+        edges.forEach(function(edge) {
+            csvContent += edge.from + "," + edge.to + "\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "network-data.csv");
+        link.click();
+    });
+
+    // Zoom and Pan Controls
+    document.getElementById('zoomIn').addEventListener('click', function() {
+        network.moveTo({
+            scale: network.getScale() * 1.2
+        });
+    });
+
+    document.getElementById('zoomOut').addEventListener('click', function() {
+        network.moveTo({
+            scale: network.getScale() / 1.2
+        });
+    });
+
+    document.getElementById('resetZoom').addEventListener('click', function() {
+        network.fit(); // Fits and centers the graph
+    });
+});
+
+    // Script for modal functionality
+    var modal = document.getElementById("helpModal");
+    var btn = document.getElementById("helpBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
